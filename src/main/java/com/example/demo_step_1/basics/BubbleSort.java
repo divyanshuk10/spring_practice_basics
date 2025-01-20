@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 ///  It is a bean
-@Component
 //@Primary
-@Qualifier("bubble")
+//@Qualifier("bubble")
+@Component
 public class BubbleSort implements Sorter {
 
 

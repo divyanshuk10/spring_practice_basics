@@ -2,15 +2,55 @@ package com.example.demo_step_1;
 
 import com.example.demo_step_1.basics.BinarySearchImpl;
 import com.example.demo_step_1.basics.TYPE;
+import com.example.demo_step_1.scope.PersonDao;
+import component_scan.component_scan.MyComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+//@ComponentScan("component_scan.component_scan")
 public class DemoStep1Application {
 
-    ///  BASICS COVERED HERE
+    static Logger LOGGER = LoggerFactory.getLogger(DemoStep1Application.class);
+
     public static void main(String[] args) {
+        ApplicationContext context = SpringApplication.run(DemoStep1Application.class, args);
+
+        ///  BASICS COVERED HERE
+         basics(context);
+
+        /// SCOPE : Complex use case
+        //scopeUseCase(context);
+
+        /// Component Scan : Component scan from diff packages
+        //componentScan(context);
+    }
+
+    private static void scopeUseCase(ApplicationContext context) {
+        PersonDao personDao1 = context.getBean(PersonDao.class);
+        PersonDao personDao2 = context.getBean(PersonDao.class);
+
+        /// personDao1 & personDao2 both are same object of a singleton scoped bean
+        /// But jdbcConnection object inside personDao are scoped with prototype
+        /// so they will be created new every time the personDao is created with context.getBean()
+
+        LOGGER.info("{}", personDao1);
+        personDao1.connectJdbc();
+
+        LOGGER.info("{}", personDao2);
+        personDao2.connectJdbc();
+    }
+
+    public static void componentScan(ApplicationContext context) {
+        MyComponent component = context.getBean(MyComponent.class);
+    }
+
+
+    public static void basics(ApplicationContext context) {
 
         ///  Old manual Approach for decoupling dependency
 //        BinarySearchImpl binarySearch = new BinarySearchImpl(new BubbleSort());
@@ -19,7 +59,7 @@ public class DemoStep1Application {
 //        SpringApplication.run(DemoStep1Application.class, args);
 
         ///  New Approach using spring for decoupling dependency
-        ApplicationContext context = SpringApplication.run(DemoStep1Application.class, args);
+
         BinarySearchImpl binarySearch = context.getBean(BinarySearchImpl.class);
         BinarySearchImpl binarySearch2 = context.getBean(BinarySearchImpl.class);
 

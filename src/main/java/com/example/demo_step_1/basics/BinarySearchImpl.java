@@ -9,14 +9,15 @@ import java.util.Arrays;
 
 ///  It is a bean for application class
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 //@Scope("request")
 //@Scope("session")
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class BinarySearchImpl {
-    @Autowired
+
     //@Qualifier("bubble")
+    @Autowired
     private Sorter quickSort;
 
     @Autowired
